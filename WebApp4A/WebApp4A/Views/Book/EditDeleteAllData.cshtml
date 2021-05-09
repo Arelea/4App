@@ -1,0 +1,67 @@
+﻿@model WebApp4A.Models.BookModel
+
+@{
+    ViewBag.Title = "EditDeleteAllData";
+}
+
+<h2>EditDeleteAllData</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@if (Model.listy.Rows.Count == 0)
+{
+    <div class="is-invalid">
+        <h3 class="text-center">Записей нет</h3>
+    </div>
+}
+else
+{
+    <table align="center" class="table table-bordered">
+
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    Изменить
+                </th>
+                <th>
+                    #Id
+                </th>
+                <th>
+                    Имя
+                </th>
+                <th>
+                    Автор
+                </th>
+                <th>
+                    Год
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @for (int i = 0; i < Model.listy.Rows.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink("Edit", "EditTableRow", new { id = @Model.listy.Rows[i]["Id"] }) |
+                        @Html.ActionLink("Delete", "DeleteTableRow", new { id = @Model.listy.Rows[i]["Id"] }) |
+                    </td>
+                    <td>
+                        @Model.listy.Rows[i]["Id"]
+                    </td>
+                    <td>
+                        @Model.listy.Rows[i]["Name"]
+                    </td>
+                    <td>
+                        @Model.listy.Rows[i]["Author"]
+                    </td>
+                    <td>
+                        @Model.listy.Rows[i]["Year"]
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
