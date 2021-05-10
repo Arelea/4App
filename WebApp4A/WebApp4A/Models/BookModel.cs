@@ -15,9 +15,11 @@ namespace WebApp4A.Models
         public string Name { get; set; }
         [Required]
         public string Author { get; set; }
+       
         [Required]
         public int Year { get; set; }
-        public XmlDocument Content { get; set; }
+
+        public string Content { get; set; }
         public DataTable listy { get; set; }
 
     }

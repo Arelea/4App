@@ -169,6 +169,8 @@
     <Content Include="Views\Book\DeleteTableRow.cshtml" />
     <Content Include="Views\Book\EditTableRow.cshtml" />
     <Content Include="Views\Book\EditDeleteAllData.cshtml" />
+    <Content Include="Views\Book\Index.cshtml" />
+    <Content Include="Views\Book\ChangeContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

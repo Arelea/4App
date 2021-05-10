@@ -43,24 +43,25 @@ else
 
             @for (int i = 0; i < Model.listy.Rows.Count; i++)
             {
-                <tr>
-                    <td>
-                        @Html.ActionLink("Edit", "EditTableRow", new { id = @Model.listy.Rows[i]["Id"] }) |
-                        @Html.ActionLink("Delete", "DeleteTableRow", new { id = @Model.listy.Rows[i]["Id"] }) |
-                    </td>
-                    <td>
-                        @Model.listy.Rows[i]["Id"]
-                    </td>
-                    <td>
-                        @Model.listy.Rows[i]["Name"]
-                    </td>
-                    <td>
-                        @Model.listy.Rows[i]["Author"]
-                    </td>
-                    <td>
-                        @Model.listy.Rows[i]["Year"]
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.ActionLink("Edit", "EditTableRow", new { id = @Model.listy.Rows[i]["Id"] }) |
+                    @Html.ActionLink("Delete", "DeleteTableRow", new { id = @Model.listy.Rows[i]["Id"] }) |
+                    @Html.ActionLink("Change Content", "ChangeContent", new { id = @Model.listy.Rows[i]["Id"] })
+                </td>
+                <td>
+                    @Model.listy.Rows[i]["Id"]
+                </td>
+                <td>
+                    @Model.listy.Rows[i]["Name"]
+                </td>
+                <td>
+                    @Model.listy.Rows[i]["Author"]
+                </td>
+                <td>
+                    @Model.listy.Rows[i]["Year"]
+                </td>
+            </tr>
             }
         </tbody>
     </table>

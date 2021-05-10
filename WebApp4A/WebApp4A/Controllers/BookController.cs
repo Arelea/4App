@@ -71,7 +71,7 @@ namespace WebApp4A.Controllers
                         command.Parameters.AddWithValue("in_Name", bookModel.Name);
                         command.Parameters.AddWithValue("in_Author", bookModel.Author);
                         command.Parameters.AddWithValue("in_Year", bookModel.Year);
-                        //command.Parameters.AddWithValue("in_Content", bookModel.Content);
+                        command.Parameters.AddWithValue("in_Content", bookModel.Content);
                         command.ExecuteNonQuery();
                     }
                 }
@@ -81,7 +81,7 @@ namespace WebApp4A.Controllers
                 }
                 return RedirectToAction(nameof(Create));
             }
-            return View(ModelState.Values);
+            return View(bookModel);
         }
 
         [HttpGet]
@@ -138,7 +138,6 @@ namespace WebApp4A.Controllers
                         command.Parameters.AddWithValue("in_Name", bookModel.Name);
                         command.Parameters.AddWithValue("in_Author", bookModel.Author);
                         command.Parameters.AddWithValue("in_Year", bookModel.Year);
-                        //command.Parameters.AddWithValue("in_Content", bookModel.Content);
                         command.ExecuteNonQuery();
                     }
                 }
@@ -148,7 +147,7 @@ namespace WebApp4A.Controllers
                 }
                 return RedirectToAction(nameof(EditDeleteAllData));
             }
-            return View(ModelState.Values);
+            return View(bookModel);
         }
 
         // Конец
@@ -171,28 +170,26 @@ namespace WebApp4A.Controllers
         [HttpPost, ActionName("DeleteTableRow")]
         public ActionResult DeleteTableRowConfirm(int id)
         {
-            if (ModelState.IsValid)
+            
+            try
             {
-                try
+                using (SqlConnection sqlConnection = new SqlConnection(connectionString))
                 {
-                    using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+                    sqlConnection.Open();
+                    SqlCommand command = new SqlCommand("DeleteBook", sqlConnection)
                     {
-                        sqlConnection.Open();
-                        SqlCommand command = new SqlCommand("DeleteBook", sqlConnection)
-                        {
-                            CommandType = CommandType.StoredProcedure
-                        };
-                        command.Parameters.AddWithValue("in_Id", id);
-                        command.ExecuteNonQuery();
-                    }
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    command.Parameters.AddWithValue("in_Id", id);
+                    command.ExecuteNonQuery();
                 }
-                catch (SqlException ex)
-                {
-                    throw ex;
-                }
-                return RedirectToAction(nameof(EditDeleteAllData));
             }
-            return View(ModelState.Values);
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return RedirectToAction(nameof(EditDeleteAllData));
+
         }
 
         [NonAction]
@@ -220,8 +217,8 @@ namespace WebApp4A.Controllers
 
                         bookModel.Year = Convert.ToInt32(dataTable.Rows[0]["Year"].ToString());
 
-                        //bookModel.Content = (System.Xml.XmlDocument)dataTable.Rows[0]["Content"];
-                       
+                        bookModel.Content = dataTable.Rows[0]["Content"].ToString();
+
                     }
                     return bookModel;
                 }
@@ -232,6 +229,42 @@ namespace WebApp4A.Controllers
             }
         }
 
-      
+        [HttpGet]
+        public ActionResult ChangeContent(int? id)
+        {
+            BookModel bookModel = FetchRecordById(id);
+            return View(bookModel);
+        }
+
+        // Конец
+        //_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+        // Начало. Пост удаления
+
+        [HttpPost]
+        public ActionResult ChangeContent(BookModel bookModel)
+        {
+
+            try
+            {
+                using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+                {
+                    sqlConnection.Open();
+                    SqlCommand command = new SqlCommand("ChangeContent", sqlConnection)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    command.Parameters.AddWithValue("in_Id", bookModel.Id);
+                    command.Parameters.AddWithValue("in_Content", bookModel.Content);
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return RedirectToAction(nameof(ChangeContent));
+
+        }
     }
 }
